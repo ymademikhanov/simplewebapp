@@ -14,7 +14,11 @@
 				$.each(data, function(i, item) {
 					var $li = $("<li>").text(item.title).appendTo($ul);
 					$li.append(" - ");
-					$("<i>").text(item.description).appendTo($li);
+					var $i = $("<i>").text(item.description).appendTo($li);
+					$li.append(" : ");
+					var $deleteButton = $("<button>").text("Delete").appendTo($li);
+					$deleteButton.addClass('deleteButton');
+					$deleteButton.data('id', item.id);
 				});
 			});
 		});
@@ -27,6 +31,20 @@
 			    console.log(response);
 			});
 		});
+		
+		$(document).on("click", ".deleteButton", function() {
+			var params = {};
+			params["id"] = $(this).data('id');
+			
+			$.ajax({
+			    url: "/SimpleWebApp/story" + '?' + $.param({"id": $(this).data('id')}),
+			    type: 'DELETE',
+			    success: function(response){
+			        console.log(response);
+			    }
+			});
+		});
+			
 	</script>	
 </head>
 

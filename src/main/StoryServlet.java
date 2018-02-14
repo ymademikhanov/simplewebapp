@@ -27,11 +27,15 @@ public class StoryServlet extends HttpServlet {
 		list.add(new Todo("study", "linear algebra and probability"));
 	}
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private String jsonify() {
 		Gson gson = new Gson();
 		String json = gson.toJson(this.list);
-		System.out.println(json);
-		response.getWriter().append(json);
+//		System.out.println(json);
+		return json;
+	}
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		response.getWriter().append(this.jsonify());
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,11 +47,15 @@ public class StoryServlet extends HttpServlet {
 			
 			System.out.println(s1[0] + s2[0]);
 			
-			Gson gson = new Gson();
-			String json = gson.toJson(this.list);
-			System.out.println(json);
-			response.getWriter().append(json);
+			response.getWriter().append(this.jsonify());
 		}
+	}
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		// to-do.
+		System.out.println("success");
+		response.getWriter().append(this.jsonify());
 	}
 
 }

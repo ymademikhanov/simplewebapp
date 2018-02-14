@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>To-do List App</title>
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
+	<script> 
+		$(document).ready(function() {
+			$.get("story", function(response) {
+				var $ul = $("<ul>").appendTo($("#todolistcomponent"));
+				data = $.parseJSON(response);
+				console.log(data);
+				$.each(data, function(i, item) {
+					var $li = $("<li>").text(item.title).appendTo($ul);
+					$li.append(" - ");
+					$("<i>").text(item.description).appendTo($li);
+				});
+			});
+		});
+		
+		$(document).on("click", "#submitButton", function() {
+			var params = {};
+			params["title"] = $("#todoTitle").val();
+			params["description"] = $("#todoDecsription").val();
+			$.post("story", $.param(params), function(response) {
+			    console.log(response);
+			});
+		});
+	</script>	
+</head>
+
+<body>
+	<div id = "todolistcomponent"> </div>
+	
+	<form>
+		Title
+		<input type="text" id="todoTitle"><br>
+		Description
+		<input type="text" id="todoDecsription"><br>
+  		<input id = "submitButton" type="submit" value="Submit">
+	</form>
+</body>
+</html>
+

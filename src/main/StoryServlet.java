@@ -17,30 +17,27 @@ import com.google.gson.Gson;
 @WebServlet({"/story", "/story/*"})
 public class StoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ArrayList<Todo> list;
+	private ArrayList<Todo> list = new ArrayList<Todo>();
 	
 	public StoryServlet() {
 		super();
-		this.list = new ArrayList<Todo>();
 		list.add(new Todo("clean", "bathroom and bedroom"));
 		list.add(new Todo("grocery", "buy some apples"));
 		list.add(new Todo("study", "linear algebra and probability"));
 	}
 	
-	private String jsonify() {
+	private String jsonify(Object obj) {
 		Gson gson = new Gson();
-		String json = gson.toJson(this.list);
+		String json = gson.toJson(obj);
 		return json;
 	}
 	
 	private Todo getElementById(int id) {
-		for(int i = 0; i < this.list.size(); i++) {
-			Todo element = this.list.get(i);
-			if(element.getId() == id) {
-				return element;
+		for (Todo item : list) {
+			if(item.getId() == id) {
+				return item;
 			}
 		}
-		
 		return null;
 	}
 	
@@ -49,13 +46,10 @@ public class StoryServlet extends HttpServlet {
 		String pathInfo = request.getPathInfo();
 		System.out.println(pathInfo);
 		if (pathInfo == null) {
-			response.getWriter().append(this.jsonify());
+			response.getWriter().append(jsonify(list));
 		} else {
 			int id = Integer.parseInt(pathInfo.substring(1));
-			Todo element = getElementById(id);
-			Gson gson = new Gson();
-			String json = gson.toJson(element);
-			response.getWriter().append(json);
+			response.getWriter().append(jsonify(getElementById(id)));
 		}
 	}
 	
@@ -66,10 +60,8 @@ public class StoryServlet extends HttpServlet {
 			String[] s1 = m.get("title");
 			String[] s2 = m.get("description");
 			list.add(new Todo(s1[0], s2[0]));
-			
 			System.out.println(s1[0] + ": " + s2[0]);
-			
-			response.getWriter().append(this.jsonify());
+			response.getWriter().append(jsonify(list));
 		}
 	}
 	
@@ -77,9 +69,8 @@ public class StoryServlet extends HttpServlet {
 
 		System.out.println("Apache Server: DELETE method invoked!");
 		int id = Integer.parseInt(request.getParameter("id"));
-		Todo element = this.getElementById(id);
-		this.list.remove(element);
-		response.getWriter().append(this.jsonify());
+		list.remove(getElementById(id));
+		response.getWriter().append(jsonify(list));
 	}
 
 }

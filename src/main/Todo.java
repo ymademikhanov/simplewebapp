@@ -11,4 +11,8 @@ public class Todo {
 		this.title = title;
 		this.description = description;
 	}
+	
+	public int getId() {
+		return this.id;
+	}
 }

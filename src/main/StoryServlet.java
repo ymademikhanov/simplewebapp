@@ -74,7 +74,7 @@ public class StoryServlet extends HttpServlet {
 	}
 	
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+
 		System.out.println("Apache Server: DELETE method invoked!");
 		int id = Integer.parseInt(request.getParameter("id"));
 		Todo element = this.getElementById(id);

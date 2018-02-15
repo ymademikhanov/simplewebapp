@@ -6,8 +6,9 @@
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	
 	<script> 
-		$(document).ready(function() {
-			$.get("story", function(response) {
+		REUSABLES = {
+			updateList: function (response) {
+				$("#todolistcomponent").empty();
 				var $ul = $("<ul>").appendTo($("#todolistcomponent"));
 				data = $.parseJSON(response);
 				console.log(data);
@@ -20,15 +21,21 @@
 					$deleteButton.addClass('deleteButton');
 					$deleteButton.data('id', item.id);
 				});
-			});
-		});
+			}
+		}
+		
+		$(document).ready(
+				$.get("story", function(response) {
+					REUSABLES.updateList(response)	
+				})
+		);
 		
 		$(document).on("click", "#submitButton", function() {
 			var params = {};
 			params["title"] = $("#todoTitle").val();
 			params["description"] = $("#todoDecsription").val();
 			$.post("story", $.param(params), function(response) {
-			    console.log(response);
+				REUSABLES.updateList(response)
 			});
 		});
 		
@@ -40,11 +47,10 @@
 			    url: "/SimpleWebApp/story" + '?' + $.param({"id": $(this).data('id')}),
 			    type: 'DELETE',
 			    success: function(response){
-			        console.log(response);
-			    }
+			    		REUSABLES.updateList(response)
+				}
 			});
-		});
-			
+		});	
 	</script>	
 </head>
 

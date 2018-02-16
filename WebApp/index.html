@@ -8,8 +8,9 @@
 	<script> 
 		REUSABLES = {
 			updateList: function (response) {
-				$("#todolistcomponent").empty();
-				var $ul = $("<ul>").appendTo($("#todolistcomponent"));
+				
+				var $ul = $("<ul>");
+				var count = 0;
 				data = $.parseJSON(response);
 				console.log(data);
 				$.each(data, function(i, item) {
@@ -18,9 +19,18 @@
 					var $i = $("<i>").text(item.description).appendTo($li);
 					$li.append(" : ");
 					var $deleteButton = $("<button>").text("Delete").appendTo($li);
+					$li.append(" Element ID is " + item.id)
 					$deleteButton.addClass('deleteButton');
 					$deleteButton.data('id', item.id);
+					count = count + 1;
 				});
+				
+				$("#todolistcomponent").empty();
+				if (count > 0) {
+					$("#todolistcomponent").append($ul);
+				} else {
+					$("#todolistcomponent").text("Empty list.")
+				}
 			}
 		}
 		
@@ -31,9 +41,10 @@
 		);
 		
 		$(document).on("click", "#submitButton", function() {
-			var params = {};
-			params["title"] = $("#todoTitle").val();
-			params["description"] = $("#todoDecsription").val();
+			var params = {
+					"title" : $("#todoTitle").val(),
+					"description" : $("#todoDecsription").val()
+			};
 			$.post("story", $.param(params), function(response) {
 				REUSABLES.updateList(response)
 			});
@@ -55,7 +66,8 @@
 </head>
 
 <body>
-	<div id = "todolistcomponent"> </div>
+	<div id = "todolistcomponent"> Empty list. </div>
+	<br>
 	
 	<form>
 		Title
@@ -64,6 +76,21 @@
 		<input type="text" id="todoDecsription"><br>
   		<input id = "submitButton" type="submit" value="Submit">
 	</form>
+	
+	<p>
+			<b>An example on how to get specific task:</b>
+	</p>
+	<p>
+			localhost:8080/SimpleWebApp/story/3
+	</p>
+	
+	<p>
+			<b>General template: </b>
+	</p>
+	
+	<p>
+			localhost:{port : integer}/SimpleWebApp/story/{id : integer}
+	</p>
 </body>
 </html>
 

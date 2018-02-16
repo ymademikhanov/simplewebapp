@@ -47,7 +47,6 @@ public class StoryServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String pathInfo = request.getPathInfo();
-		System.out.println(pathInfo);
 		if (pathInfo == null) {
 			response.getWriter().append(this.jsonify());
 		} else {

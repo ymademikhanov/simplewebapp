@@ -21,6 +21,10 @@ public class StoryServlet extends HttpServlet {
 	
 	public StoryServlet() {
 		super();
+		Todo first = new Todo("Software Engineering", "Decide on a sprint goal (what you will deliver after two weeks) and determine the corresponding backlog items");
+		Todo second = new Todo("Macroeconomics", "Aggregate Expenditure and Equilibrium Output Chapter 23, The Government and Fiscal Policy Chapter 24.");
+		listMap.put(first.getId(), first);
+		listMap.put(second.getId(), second);
 	}
 	
 	private String jsonify(Object obj) {
@@ -32,7 +36,7 @@ public class StoryServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		String pathInfo = request.getPathInfo();
-		System.out.println(pathInfo);
+//		System.out.println(pathInfo);
 		if (pathInfo == null) {
 			response.getWriter().append(jsonify(listMap));
 		} else {

@@ -4,32 +4,55 @@
 	<meta charset="UTF-8">
 	<title>To-do List App</title>
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
+      rel="stylesheet">
 	<script> 
+	
 		REUSABLES = {
-			updateList: function (response) {
+			generateCard: function(item) {
+				var $card = $("<div>");
+				$card.addClass("card");
+				var $cardBlock = $("<div>");
+				$cardBlock.addClass("card-block");
+				var $h4 = $("<h4>");
+				$h4.addClass("card-title");
+				$h4.text(item.title);
+				var $h6 = $("<h6>");
+				$h6.addClass("card-subtitle");
+				$h6.text("id: " + item.id);
+				var $p = $("<p>");
+				$p.addClass("card-text");
+				$p.text(item.description);
 				
-				var $ul = $("<ul>");
+				var $deleteButton = $("<button>").text("Delete");
+				$deleteButton.addClass('deleteButton');
+				$deleteButton.addClass('btn btn-danger');
+				$deleteButton.data('id', item.id);
+				
+				$card.append($cardBlock);
+				$cardBlock.append($h4);
+				$cardBlock.append($h6);
+				$cardBlock.append($p);
+				$cardBlock.append($deleteButton);
+				return $card;
+			},
+			updateList: function (response) {
+				var $ul = $("<ul>").addClass("list-group");
 				var count = 0;
 				data = $.parseJSON(response);
 				console.log(data);
 				$.each(data, function(i, item) {
-					var $li = $("<li>").text(item.title).appendTo($ul);
-					$li.append(" - ");
-					var $i = $("<i>").text(item.description).appendTo($li);
-					$li.append(" : ");
-					var $deleteButton = $("<button>").text("Delete").appendTo($li);
-					$li.append(" Element ID is " + item.id)
-					$deleteButton.addClass('deleteButton');
-					$deleteButton.data('id', item.id);
+					var $li = $("<li>").addClass("list-group-item").appendTo($ul);
+					$li.append(REUSABLES.generateCard(item));
 					count = count + 1;
 				});
 				
 				$("#todolistcomponent").empty();
 				if (count > 0) {
+					$("#todolistcomponent").append("<h2>Your todo list:</h2><br>");
 					$("#todolistcomponent").append($ul);
 				} else {
-					$("#todolistcomponent").text("Empty list.")
+					$("#todolistcomponent").append("<h2>Empty list.</h2>")
 				}
 			}
 		}
@@ -65,16 +88,20 @@
 	</script>	
 </head>
 
-<body>
-	<div id = "todolistcomponent"> Empty list. </div>
+<body style="padding:10px; display: table-cell; vertical-align: middle; height: 100%;  display: table;
+    margin: auto;">
+	<div id = "todolistcomponent" style="width:500px"> Empty list. </div>
 	<br>
 	
 	<form>
-		Title
+		<b>Add a new todo: </b><br>
+		<div class="form-group">
+		Title<br>
 		<input type="text" id="todoTitle"><br>
-		Description
+		Description<br>
 		<input type="text" id="todoDecsription"><br>
-  		<input id = "submitButton" type="submit" value="Submit">
+  		<input class="btn btn-primary" id = "submitButton" type="submit" value="Submit" style="margin: 5px">
+  		</div>
 	</form>
 	
 	<p>

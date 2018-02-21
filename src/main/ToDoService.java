@@ -18,6 +18,7 @@ public class ToDoService {
 	
 	@GET
 	public String getList() {
+		System.out.println("cool!");
 		return d.getCollection();
 	}
 	

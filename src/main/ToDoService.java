@@ -7,6 +7,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 
+// Yerzhan Mademikhanov and Anuar Maratkhan
+
 @Path("/todo")
 public class ToDoService {
 
@@ -18,7 +20,6 @@ public class ToDoService {
 	
 	@GET
 	public String getList() {
-		System.out.println("cool!");
 		return d.getCollection();
 	}
 	
@@ -31,7 +32,6 @@ public class ToDoService {
 	@POST
 	@Consumes("application/json")
 	public void postInstance(String req) {
-		System.out.println(req);
 		d.addRow(req);
 	}
 	

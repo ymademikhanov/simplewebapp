@@ -22,4 +22,8 @@ public class DataGatherer {
 		todo.setId(++counter);
 		listMap.put(todo.getId(), todo);
 	}
+	
+	public void deleteRow(Integer id) {
+		listMap.remove(id);
+	}
 }

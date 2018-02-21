@@ -12,8 +12,17 @@ public class ToDoApplication extends Application {
 	private Set<Class<?>> empty = new HashSet<Class<?>>();
 	
 	public ToDoApplication() {
-//		singletons.add()
+		singletons.add(new ToDoService(new DataGatherer()));
 	}
 	
+	@Override
+	public Set<Class<?>> getClasses() {
+		return empty;
+	}
+	
+	@Override
+	public Set<Object> getSingletons() {
+		return singletons;
+	}
 	
 }

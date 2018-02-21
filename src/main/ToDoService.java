@@ -31,6 +31,7 @@ public class ToDoService {
 	@POST
 	@Consumes("application/json")
 	public void postInstance(String req) {
+		System.out.println(req);
 		d.addRow(req);
 	}
 	

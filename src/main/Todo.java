@@ -17,4 +17,8 @@ public class Todo {
 	public int getId() {
 		return this.id;
 	}
+	
+	public String toString() {
+		return this.title + " : " + this.description ;
+	}
 }

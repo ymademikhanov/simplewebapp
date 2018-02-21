@@ -58,7 +58,7 @@
 		}
 		
 		$(document).ready(
-				$.get("story", function(response) {
+				$.get("/SimpleWebApp/services/todo", function(response) {
 					REUSABLES.updateList(response);	
 				})
 		);
@@ -69,22 +69,35 @@
 					"description" : escape($("#todoDescription").val())
 			};
 			
-			$.post("story", params, function(response) {
-				$("#todoTitle").val("");
-				$("#todoDescription").val("");
-				REUSABLES.updateList(response)
-			});
+			$("#todoTitle").val("");
+			$("#todoDescription").val("");
+			
+			$.ajax ({
+		        type: "POST",
+		        url: '/SimpleWebApp/services/todo',
+		        contentType: 'application/json',
+		        async: false,
+		        //json object to sent to the authentication url
+		        data: JSON.stringify(params),
+		        success: function () {
+		        		console.log("requested");
+		        		$.get("/SimpleWebApp/services/todo", function(response) {
+		        			console.log(response);
+						REUSABLES.updateList(response);	
+					})
+		        }
+		    })
 		});
 		
 		$(document).on("click", ".deleteButton", function() {
-			var params = {};
-			params["id"] = $(this).data('id');
-			
 			$.ajax({
-			    url: "/SimpleWebApp/story" + '?' + $.param({"id": $(this).data('id')}),
+			    url: "/SimpleWebApp/services/todo/" + $(this).data('id'),
 			    type: 'DELETE',
-			    success: function(response){
-			    		REUSABLES.updateList(response)
+			    success: function() {
+				    	$.get("/SimpleWebApp/services/todo", function(response) {
+		        			console.log(response);
+						REUSABLES.updateList(response);	
+					})
 				}
 			});
 		});	

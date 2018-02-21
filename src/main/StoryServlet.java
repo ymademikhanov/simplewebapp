@@ -47,9 +47,11 @@ public class StoryServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("POST method is invoked");
 		Map<String, String[]> m = request.getParameterMap();
 		if (m.containsKey("title") && m.containsKey("description")) {
 			Todo temp = new Todo(m.get("title")[0], m.get("description")[0]);
+			System.out.println(temp);
 			listMap.put(temp.getId(), temp);
 			response.getWriter().append(jsonify(listMap));
 		}

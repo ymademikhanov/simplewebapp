@@ -36,10 +36,23 @@
 	    <version>4.0.0</version>
 	    <scope>provided</scope>
 	</dependency>
-	<dependency >
+	<!-- <dependency >
 		<groupId >org.glassfish.jersey.containers </groupId >
 		<artifactId>jersey-container-servlet-core</artifactId>
 		<version >2.26</version >
-	</dependency >
+	</dependency > -->
+  	 <dependency>
+
+        <groupId>org.glassfish.jersey.bundles</groupId>
+
+        <artifactId>jaxrs-ri</artifactId>
+
+        <version>2.23.2</version>
+
+        <type>zip</type>
+
+        <classifier>src</classifier>
+
+    </dependency>
   </dependencies>
 </project>

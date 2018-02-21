@@ -1,0 +1,64 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ToDo",
+		"_postman_id": "20d9d89c-653c-21b4-f437-9221a78c4833",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getAll",
+			"request": {
+				"url": "localhost:8080/SimpleWebApp/services/todo",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "getInstance",
+			"request": {
+				"url": "localhost:8080/SimpleWebApp/services/todo/3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "postInstance",
+			"request": {
+				"url": "localhost:8080/SimpleWebApp/services/todo",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"description\":\"Aggregate Expenditure and Equilibrium Output Chapter 23, The Government and Fiscal Policy Chapter 24.\",\n\t\"title\":\"Macroeconomics\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "deleteInstance",
+			"request": {
+				"url": "localhost:8080/SimpleWebApp/services/todo/2",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

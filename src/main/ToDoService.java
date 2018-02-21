@@ -30,13 +30,13 @@ public class ToDoService {
 	
 	@POST
 	@Consumes("application/json")
-	public void addInstance(String req) {
+	public void postInstance(String req) {
 		d.addRow(req);
 	}
 	
 	@DELETE
 	@Path("{id: [0-9]+}")
-	public void removeInstance(@PathParam("id") String id) {
+	public void deleteInstance(@PathParam("id") String id) {
 		d.deleteRow(Integer.parseUnsignedInt(id));
 	}
 	

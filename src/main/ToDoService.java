@@ -24,20 +24,30 @@ public class ToDoService {
 	public Response getList() {
 		String r = d.getCollection();
 		ResponseBuilder b = Response.ok(r);
-		b.header("header-name", "value");
+//		b.header("header-name", "value"); - do we really need this?
 		return b.build();
 	}
 	
 	@GET
 	@Path("{id: [0-9]+}")
-	public String getInstance(@PathParam("id") String id) {
-		return d.getRow(Integer.parseUnsignedInt(id));
+	public Response getInstance(@PathParam("id") String id) {
+		String r = d.getRow(Integer.parseUnsignedInt(id));
+		ResponseBuilder b = Response.ok(r);
+		return b.build();
 	}
 	
 	@POST
 	@Consumes("application/json")
-	public void postInstance(String req) {
-		d.addRow(req);
+	public Response postInstance(String req) {
+		if (req != "") {
+			d.addRow(req);
+			String r = "Data instance has been successfully added.";
+			ResponseBuilder b = Response.ok(r);
+		} else {
+			String r = "No content";
+			ResponseBuilder b = Response.noContent();
+		}
+		return b.build();
 	}
 	
 	@DELETE

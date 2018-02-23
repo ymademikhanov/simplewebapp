@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.Response.Status;
 
 // Yerzhan Mademikhanov and Anuar Maratkhan
 
@@ -24,7 +25,6 @@ public class ToDoService {
 	public Response getList() {
 		String r = d.getCollection();
 		ResponseBuilder b = Response.ok(r);
-//		b.header("header-name", "value"); - do we really need this?
 		return b.build();
 	}
 	
@@ -39,21 +39,30 @@ public class ToDoService {
 	@POST
 	@Consumes("application/json")
 	public Response postInstance(String req) {
+		ResponseBuilder b;
 		if (req != "") {
 			d.addRow(req);
 			String r = "Data instance has been successfully added.";
-			ResponseBuilder b = Response.ok(r);
+			b = Response.ok(r);
 		} else {
 			String r = "No content";
-			ResponseBuilder b = Response.noContent();
+			b = Response.noContent();
 		}
 		return b.build();
 	}
 	
 	@DELETE
 	@Path("{id: [0-9]+}")
-	public void deleteInstance(@PathParam("id") String id) {
-		d.deleteRow(Integer.parseUnsignedInt(id));
+	public Response deleteInstance(@PathParam("id") String id) {
+		ResponseBuilder b;
+		String r;
+		if (d.deleteRow(Integer.parseUnsignedInt(id))) {
+			r = "The instance has successfully been deleted.";
+			b = Response.ok(r);
+		} else {
+			b = Response.status(Status.NOT_FOUND);
+		}
+		return b.build();
 	}
 	
 }

@@ -25,7 +25,11 @@ public class DataGatherer {
 		listMap.put(todo.getId(), todo);
 	}
 	
-	public void deleteRow(Integer id) {
-		listMap.remove(id);
+	public Boolean deleteRow(Integer id) {
+		Boolean isDeleted = false;
+		if (listMap.remove(id) != null) {
+			isDeleted = true;
+		}
+		return isDeleted;
 	}
 }

@@ -39,8 +39,9 @@
 			updateList: function (response) {
 				var $ul = $("<ul>").addClass("list-group");
 				var count = 0;
+				
 				data = $.parseJSON(response);
-				console.log(data);
+				
 				$.each(data, function(i, item) {
 					var $li = $("<li>").addClass("list-group-item").appendTo($ul);
 					$li.append(REUSABLES.generateCard(item));
@@ -58,16 +59,15 @@
 		}
 		
 		$(document).ready(
-				$.get("/SimpleWebApp/services/todo", function(data, textStatus, request) {
-					console.log("dasjdkasl : " + textStatus);
-					REUSABLES.updateList(data);
-				})
+			$.get("/SimpleWebApp/services/todo", function(data, textStatus, request) {
+				REUSABLES.updateList(data);
+			})
 		);
 		
 		$(document).on("click", "#submitButton", function(e) {
 			var params = {
-					"title" : escape($("#todoTitle").val()),
-					"description" : escape($("#todoDescription").val())
+				"title" : escape($("#todoTitle").val()),
+				"description" : escape($("#todoDescription").val())
 			};
 			
 			$("#todoTitle").val("");
@@ -80,25 +80,18 @@
 		        async: false,
 		        //json object to sent to the authentication url
 		        data: JSON.stringify(params),
-		        success: function () {
-		        		console.log("requested");
-		        		$.get("/SimpleWebApp/services/todo", function(response) {
-		        			console.log(response);
-						REUSABLES.updateList(response);	
-					})
+		        success: function (response) {
+					REUSABLES.updateList(response);
 		        }
 		    })
 		});
 		
 		$(document).on("click", ".deleteButton", function() {
 			$.ajax({
-			    url: "/SimpleWebApp/services/todo/" + $(this).data('id'),
+			    url: "/SimpleWebApp/services/todo?id=" + $(this).data('id'),
 			    type: 'DELETE',
-			    success: function() {
-				    	$.get("/SimpleWebApp/services/todo", function(response) {
-		        			console.log(response);
-						REUSABLES.updateList(response);	
-					})
+			    success: function(response) {
+					REUSABLES.updateList(response);	
 				}
 			});
 		});	

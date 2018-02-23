@@ -6,6 +6,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 // Yerzhan Mademikhanov and Anuar Maratkhan
 
@@ -19,8 +21,11 @@ public class ToDoService {
 	}
 	
 	@GET
-	public String getList() {
-		return d.getCollection();
+	public Response getList() {
+		String r = d.getCollection();
+		ResponseBuilder b = Response.ok(r);
+		b.header("header-name", "value");
+		return b.build();
 	}
 	
 	@GET

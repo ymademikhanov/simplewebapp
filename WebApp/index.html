@@ -58,8 +58,9 @@
 		}
 		
 		$(document).ready(
-				$.get("/SimpleWebApp/services/todo", function(response) {
-					REUSABLES.updateList(response);	
+				$.get("/SimpleWebApp/services/todo", function(data, textStatus, request) {
+					console.log("dasjdkasl : " + textStatus);
+					REUSABLES.updateList(data);
 				})
 		);
 		

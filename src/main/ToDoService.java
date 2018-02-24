@@ -5,7 +5,6 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -16,54 +15,45 @@ import javax.ws.rs.core.Response.Status;
 @Path("/todo")
 public class ToDoService {
 
-	private DataGatherer d;
+	private DataGatherer dataGatherer;
 
 	public ToDoService(DataGatherer d) {
-		this.d = d;
+		this.dataGatherer = d;
 	}
 	
 	@GET
 	public Response getList(@QueryParam("id") String id) {
-		ResponseBuilder b;
+		String result;
 		if (id == null) {
-			String r = d.getCollection();
-			b = Response.ok(r);
+			result = dataGatherer.getCollection();
 		} else {
-			String r = d.getRow(Integer.parseUnsignedInt(id));
-			b = Response.ok(r);
+			result = dataGatherer.getRow(Integer.parseUnsignedInt(id));
 		}
-		return b.build();
+		return Response.ok(result).build();
 	}
 	
 	@POST
 	@Consumes("application/json")
-	public Response postInstance(String req) {
-		ResponseBuilder b;
-		if (req != "") {
-			d.addRow(req);
-			String r = "Data instance has been successfully added.";
-			b = Response.ok(r);
+	public Response postInstance(String data) {
+		ResponseBuilder builder;
+		if (data == "") {
+			builder = Response.noContent();
 		} else {
-			b = Response.noContent();
+			dataGatherer.addRow(data);
+			builder = Response.ok(dataGatherer.getCollection());
 		}
-		return b.build();
+		return builder.build();
 	}
 	
 	@DELETE
 	public Response deleteInstance(@QueryParam("id") String id) {
-		ResponseBuilder b;
-		String r;
-		if (id != null) {
-			if (d.deleteRow(Integer.parseUnsignedInt(id))) {
-				r = "The instance has successfully been deleted.";
-				b = Response.ok(r);
-			} else {
-				b = Response.status(Status.NOT_FOUND);
-			}
+		ResponseBuilder builder;
+		if (id != null && dataGatherer.deleteRow(Integer.parseUnsignedInt(id))) {
+			builder = Response.ok(dataGatherer.getCollection());
 		} else {
-			b = Response.status(Status.NOT_FOUND);
+			builder = Response.status(Status.NOT_FOUND);
 		}
-		return b.build();
+		return builder.build();
 	}
 	
 }

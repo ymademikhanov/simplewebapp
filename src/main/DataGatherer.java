@@ -26,10 +26,6 @@ public class DataGatherer {
 	}
 	
 	public Boolean deleteRow(Integer id) {
-		Boolean isDeleted = false;
-		if (listMap.remove(id) != null) {
-			isDeleted = true;
-		}
-		return isDeleted;
+		return listMap.remove(id) != null ? true : false;
 	}
 }

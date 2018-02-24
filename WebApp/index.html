@@ -2,31 +2,47 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	
 	<title>To-do List App</title>
+	
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"
       rel="stylesheet">
+      
 	<script> 
+		const TAG_DIV = "<div>";
+		const TAG_H1 = "<h1>";
+		const TAG_H2 = "<h2>";
+		const TAG_H3 = "<h3>";
+		const TAG_H4 = "<h4>";
+		const TAG_H6 = "<h6>";
+		const TAG_P = "<p>";
+		const TAG_BUTTON = "<button>";
+		const TAG_UL = "<ul>";
 	
 		REUSABLES = {
 			generateCard: function(item) {
-				var $card = $("<div>");
-				$card.addClass("card");
-				var $cardBlock = $("<div>");
-				$cardBlock.addClass("card-block");
-				var $h4 = $("<h4>");
-				$h4.addClass("card-title");
-				$h4.text(unescape(item.title));
-				var $h6 = $("<h6>");
-				$h6.addClass("card-subtitle");
-				$h6.text("id: " + item.id);
-				var $p = $("<p>");
-				$p.addClass("card-text");
-				$p.text(unescape(item.description));
+				var $card = $(TAG_DIV);
+				var $cardBlock = $(TAG_DIV);
+				var $h4 = $(TAG_H4);
+				var $h6 = $(TAG_H6);
+				var $p = $(TAG_P);
+				var $deleteButton = $(TAG_BUTTON);
 				
-				var $deleteButton = $("<button>").text("Delete");
+				$card.addClass("card");
+				$cardBlock.addClass("card-block");
+				$h4.addClass("card-title");
+				$h6.addClass("card-subtitle");
+				$p.addClass("card-text");
 				$deleteButton.addClass('deleteButton');
 				$deleteButton.addClass('btn btn-danger');
+				
+				$h4.text(unescape(item.title));
+				$h6.text("id: " + item.id);
+				$p.text(unescape(item.description));
+				
+				$deleteButton.text("Delete")
 				$deleteButton.data('id', item.id);
 				
 				$card.append($cardBlock);
@@ -36,35 +52,34 @@
 				$cardBlock.append($deleteButton);
 				return $card;
 			},
-			updateList: function (response) {
-				var $ul = $("<ul>").addClass("list-group");
-				var count = 0;
-				
+			updateList: function (response, component) {
+				var $ul = $(TAG_UL).addClass("list-group");
 				data = $.parseJSON(response);
 				
+				var count = 0;
 				$.each(data, function(i, item) {
 					var $li = $("<li>").addClass("list-group-item").appendTo($ul);
 					$li.append(REUSABLES.generateCard(item));
 					count = count + 1;
 				});
 				
-				$("#todolistcomponent").empty();
+				$(component).empty();
 				if (count > 0) {
-					$("#todolistcomponent").append("<h2>Your todo list:</h2>");
-					$("#todolistcomponent").append($ul);
+					$(component).append("<h2>Your todo list:</h2>");
+					$(component).append($ul);
 				} else {
-					$("#todolistcomponent").append("<h2>Empty list.</h2>")
+					$(component).append("<h2>Empty list.</h2>")
 				}
 			}
 		}
 		
 		$(document).ready(
 			$.get("/SimpleWebApp/services/todo", function(data, textStatus, request) {
-				REUSABLES.updateList(data);
+				REUSABLES.updateList(data, "#todolistcomponent");
 			})
 		);
 		
-		$(document).on("click", "#submitButton", function(e) {
+		$(document).on("click", "#submitButton", function() {
 			var params = {
 				"title" : escape($("#todoTitle").val()),
 				"description" : escape($("#todoDescription").val())
@@ -80,7 +95,7 @@
 		        async: false,
 		        data: JSON.stringify(params),
 		        success: function (response) {
-					REUSABLES.updateList(response);
+					REUSABLES.updateList(response, "#todolistcomponent");
 		        }
 		    })
 		});
@@ -90,7 +105,7 @@
 			    url: "/SimpleWebApp/services/todo?id=" + $(this).data('id'),
 			    type: 'DELETE',
 			    success: function(response) {
-					REUSABLES.updateList(response);	
+					REUSABLES.updateList(response, "#todolistcomponent");	
 				}
 			});
 		});	
@@ -106,27 +121,8 @@
 	<form class="form-signin">
 		<input id="todoTitle" class="form-control" placeholder="Title" name="title" style="margin-top:2px;">
 		<input id="todoDescription" class="form-control" name = "description" placeholder="Description" style="margin-top:2px;">
-  		<button  class="btn btn-lg btn-primary btn-block" type="button" id = "submitButton" style="margin-top: 5px">Add</button>
+  		<button class="btn btn-lg btn-primary btn-block" type="button" id = "submitButton" style="margin-top: 5px">Add</button>
 	</form>
-	
-	<br />
-	<br />
-	<br />
-	<p>
-			<b>An example on how to get specific task:</b>
-	</p>
-	
-		<p>
-			localhost:8080/SimpleWebApp/story/3
-	</p>
-	
-	<p>
-			<b>General template: </b>
-	</p>
-	
-	<p>
-			localhost:{port : integer}/SimpleWebApp/story/{id : integer}
-	</p>
 </body>
 </html>
 

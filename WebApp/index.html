@@ -12,6 +12,7 @@
       
 	<script> 
 		const TAG_DIV = "<div>";
+		const TAG_LI = "<li>";
 		const TAG_H1 = "<h1>";
 		const TAG_H2 = "<h2>";
 		const TAG_H3 = "<h3>";
@@ -53,23 +54,25 @@
 				return $card;
 			},
 			updateList: function (response, component) {
+				var $h2 = $(TAG_H2);
 				var $ul = $(TAG_UL).addClass("list-group");
 				data = $.parseJSON(response);
 				
 				var count = 0;
 				$.each(data, function(i, item) {
-					var $li = $("<li>").addClass("list-group-item").appendTo($ul);
+					var $li = $(TAG_LI).addClass("list-group-item").appendTo($ul);
 					$li.append(REUSABLES.generateCard(item));
 					count = count + 1;
 				});
 				
 				$(component).empty();
 				if (count > 0) {
-					$(component).append("<h2>Your todo list:</h2>");
-					$(component).append($ul);
+					$h2.text("You have " + count + " to do(s):");
 				} else {
-					$(component).append("<h2>Empty list.</h2>")
+					$h2.text("Nothing to do!");
 				}
+				$(component).append($h2);
+				$(component).append($ul);
 			}
 		}
 		
@@ -114,10 +117,11 @@
 
 <body style="padding:10px; display: table-cell; vertical-align: middle; height: 100%;  display: table;
     margin: auto;">
-	<div id = "todolistcomponent" style="width:500px"> Empty list. </div>
+	<div id = "todolistcomponent" style="width:500px"> 
+	</div>
 	<br/>
 	
-	<h2> A new todo: </h2>
+	<h3> A new todo: </h3>
 	<form class="form-signin">
 		<input id="todoTitle" class="form-control" placeholder="Title" name="title" style="margin-top:2px;">
 		<input id="todoDescription" class="form-control" name = "description" placeholder="Description" style="margin-top:2px;">
